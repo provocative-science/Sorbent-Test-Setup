@@ -1,0 +1,22 @@
+title: Simple Test
+
+scripts:
+  - id: test_script
+    path: test.py
+
+left_panel:
+  width: 0.5
+  tabs:
+    - name: Test
+      layout:
+        - label: Test Button
+          action:
+            script_id: test_script
+
+right_panel:
+  width: 0.5
+  tabs:
+    - name: Output
+      layout:
+        - display: logs
+          script_id: test_script
