@@ -85,3 +85,9 @@ right_panel:
           height: 250
 
 
+        - title: CO2 (ppm)
+          plot: line
+          stream_id: CO2 ppm
+          color:rgb(252, 130, 37)
+          height: 250
+

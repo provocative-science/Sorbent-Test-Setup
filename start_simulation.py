@@ -39,9 +39,11 @@ def main(client: connect_python.Client):
 
             temp = flow_rate/4
             pressure = flow_rate 
+            co2_ppm = flow_rate
 
             client.stream("Temperature", datetime.now(), temp)
             client.stream("Pressure", datetime.now(), pressure)
+            client.stream("CO2 ppm", datetime.now(), co2_ppm)
 
 
 
