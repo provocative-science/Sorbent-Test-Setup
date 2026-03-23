@@ -84,15 +84,3 @@ right_panel:
           stream_id: Unfiltered CO2 ppm, Filtered CO2 ppm
           height: 250
 
-
-        - title: CO2 (ppm)
-          plot: line
-          stream_id: CO2 ppm
-          color: rgb(252, 130, 37)
-          height: 250
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 1a5c7e1 (returning layout to original)
