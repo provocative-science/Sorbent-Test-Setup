@@ -10,7 +10,7 @@ left_panel:
           group_layout:
             - text: Start Simulation
               on_click:
-                path: sim_data.py
+                path: test_ljm.py
             - text: Reset Data
               on_click:
                 path: reset_data.py
