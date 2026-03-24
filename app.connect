@@ -41,12 +41,6 @@ left_panel:
           color: rgb(231, 110, 110)
           units: s
 
-        - label: "Temperature"
-          id: temp
-          display: stream_value
-          stream_id: Temperature
-          color: rgb(247, 249, 142)
-          units: °C
 
 
 right_panel:
@@ -66,19 +60,12 @@ right_panel:
           color: rgb(138, 170, 226)
           height: 250
 
-        - title: Temperature (°C)
-          plot: line 
-          stream_id: Temperature
-          color: rgb(219, 76, 76)
-          height: 250
-
         - title: Pressure (torr)
           plot: line
           stream_id: Pressure
           color: rgb(233, 48, 202)
           height: 250
        
-
         - title: CO2 (ppm)
           plot: line
           stream_id: Unfiltered CO2 ppm, Filtered CO2 ppm

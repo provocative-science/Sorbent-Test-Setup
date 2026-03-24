@@ -7,17 +7,17 @@ import serial
 
 
 
-def voltage_to_temperature(therm_voltage, supply_voltage, R_fixed, R_nominal, T_nominal, beta):
-    """Convert AIN voltage to temperature in Celsius using Beta equation."""
-    if therm_voltage <= 0 or therm_voltage >= supply_voltage:
-        return None  # Guard against divide-by-zero at rail voltages
-    # Voltage divider → thermistor resistance
-    R_thermistor = R_fixed * therm_voltage / (supply_voltage - therm_voltage)
-    # Beta equation → temperature in Kelvin
-    temp_K = 1.0 / (1.0 / T_nominal + (1.0 / beta) * math.log(R_thermistor / R_nominal))
-    return temp_K - 273.15  # Convert to Celsius
+# def voltage_to_temperature(therm_voltage, supply_voltage, R_fixed, R_nominal, T_nominal, beta):
+#     """Convert AIN voltage to temperature in Celsius using Beta equation."""
+#     if therm_voltage <= 0 or therm_voltage >= supply_voltage:
+#         return None  # Guard against divide-by-zero at rail voltages
+#     # Voltage divider → thermistor resistance
+#     R_thermistor = R_fixed * therm_voltage / (supply_voltage - therm_voltage)
+#     # Beta equation → temperature in Kelvin
+#     temp_K = 1.0 / (1.0 / T_nominal + (1.0 / beta) * math.log(R_thermistor / R_nominal))
+#     return temp_K - 273.15  # Convert to Celsius
 
-    temp_K = pressure_fs_temp * (supply_voltage / pressure_fs_voltage)
+#     temp_K = pressure_fs_temp * (supply_voltage / pressure_fs_voltage)
 
 
     
@@ -59,13 +59,13 @@ def main(client: connect_python.Client):
         flow_fs_voltage = 5.0  # Full scale voltage of the sensor
         max_flow = 10.0    # Full scale flow rate in liters/min; 10,000 SCCM
 
-    ##### THERMISTOR ##### --- these values needs to be upated with accurate values once thermistor is chosen
-        thermistor_name = "AIN1"
-        R_fixed = 1000.0        # Fixed resistor in voltage divider (ohms)
-        R_nominal = 10000.0     # Thermistor resistance at 25°C
-        T_nominal = 298.15      # 25°C in Kelvin
-        beta = 3892             # Beta coefficient (check your thermistor datasheet)
-        supply_voltage = 2.5    # Voltage divider voltage
+    # ##### THERMISTOR ##### --- these values needs to be upated with accurate values once thermistor is chosen
+    #     thermistor_name = "AIN1"
+    #     R_fixed = 1000.0        # Fixed resistor in voltage divider (ohms)
+    #     R_nominal = 10000.0     # Thermistor resistance at 25°C
+    #     T_nominal = 298.15      # 25°C in Kelvin
+    #     beta = 3892             # Beta coefficient (check your thermistor datasheet)
+    #     supply_voltage = 2.5    # Voltage divider voltage
 
     ##### PRESSURE #####
         pressure_name = "AIN7"
@@ -90,9 +90,9 @@ def main(client: connect_python.Client):
             # cumulative_flow += (abs(flow_rate) / 60.0) * time_delta #adding the abs(negative) (reverse direction)
             
 
-            # Read thermistor
-            therm_voltage = ljm.eReadName(handle, thermistor_name)
-            temperature = voltage_to_temperature(therm_voltage, supply_voltage, R_fixed, R_nominal, T_nominal, beta)
+            # # Read thermistor
+            # therm_voltage = ljm.eReadName(handle, thermistor_name)
+            # temperature = voltage_to_temperature(therm_voltage, supply_voltage, R_fixed, R_nominal, T_nominal, beta)
 
             
 
@@ -114,13 +114,13 @@ def main(client: connect_python.Client):
             client.stream("Filtered CO2 ppm", datetime.now(), filtered)
             client.stream("Unfiltered CO2 ppm", datetime.now(), unfiltered)
 
-            if temperature is not None:
-                client.stream("Temperature", datetime.now(), temperature)
+            #if temperature is not None:
+                #client.stream("Temperature", datetime.now(), temperature)
             
             
             # Print to logs 
             print(f"Point {point_counter}: \n Flow = {flow_rate:.2f}, Cumulative = {cumulative_flow:.2f}", flush=True)
-            print(f' Pressure = {pressure:.2f} Temp = {temperature:.2f} \n')
+            #print(f' Pressure = {pressure:.2f} Temp = {temperature:.2f} \n')
             #print(f'{pressure_voltage}')
 
 
