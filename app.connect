@@ -68,7 +68,15 @@ right_panel:
        
         - title: CO2 (ppm)
           plot: line
-          stream_id: Unfiltered CO2 ppm, Filtered CO2 ppm
+          stream_id: Unfiltered CO2 ppm
+          color: rgb(231, 110, 110)
           height: 250
+
+        - title: CO2 (ppm)
+          plot: line
+          stream_id: Filtered CO2 ppm
+          color: rgb(231, 110, 110)
+          height: 250
+
 
 

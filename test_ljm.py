@@ -49,6 +49,9 @@ with serial.Serial(PORT, BAUD, bytesize=8, parity="N", stopbits=1, timeout=2) as
 
     while True:
         line = ser.readline().decode("ascii", errors="ignore").strip()
+        print (line)
+        # filtered = float(parts[5])
+        # unfiltered = float(parts[7])
         filtered = line[18:23]     # chars 5..9
         unfiltered = line[26:31]  # chars 11..15
 

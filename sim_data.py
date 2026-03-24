@@ -70,13 +70,13 @@ def main(client: connect_python.Client):
     pressure_fs_voltage = 10
     full_scale_torr = 100
         
-    PORT = "/dev/cu.usbserial-B0021TCS"
-    BAUD = 9600
+    # PORT = "/dev/cu.usbserial-B0021TCS"
+    # # BAUD = 9600
 
-    with serial.Serial(PORT, BAUD, bytesize=8, parity="N", stopbits=1, timeout=2) as ser:
-    # Put sensor in streaming mode
-            ser.write(b"K 1\r\n")     
-            while True:
+    # with serial.Serial(PORT, BAUD, bytesize=8, parity="N", stopbits=1, timeout=2) as ser:
+    # # Put sensor in streaming mode
+    #         ser.write(b"K 1\r\n")     
+    while True:
                 current_time = time.time()
                 elapsed_time = current_time - start_time
                 point_counter += 1
@@ -104,18 +104,22 @@ def main(client: connect_python.Client):
                 pressure_voltage = ljm.eReadName(handle, pressure_name)
                 pressure = voltage_to_pressure(pressure_voltage, pressure_fs_voltage, full_scale_torr)
 
-                line = ser.readline().decode("ascii", errors="ignore").strip()
-                filtered = line[18:23]     # chars 5..9
-                unfiltered = line[26:31]  # chars 11..15
-
+                # line = ser.readline().decode("ascii", errors="ignore").strip()
+                # filtered = line[18:23].strip()
+                # unfiltered = line[26:31].strip()
+                
+                # un_float= float(unfiltered[0])
+                # f_float = float(filtered)
 
             # Stream the flow data using positional arguments
                 client.stream("Pressure", datetime.now(), pressure)
                 client.stream("Flow Rate", datetime.now(), flow_rate)
                 client.stream("Cumulative Flow", datetime.now(), cumulative_flow)
                 client.stream("Elapsed Time", datetime.now(), elapsed_time)
-                client.stream("Filtered CO2 ppm", datetime.now(), filtered)
-                client.stream("Unfiltered CO2 ppm", datetime.now(), unfiltered)
+                
+                
+                # client.stream("Filtered CO2 ppm", datetime.now(), f_float)
+                # client.stream("Unfiltered CO2 ppm", datetime.now(), un_float)
 
             #if temperature is not None:
                 #client.stream("Temperature", datetime.now(), temperature)
@@ -123,8 +127,10 @@ def main(client: connect_python.Client):
             
             # Print to logs 
                 print(f"Point {point_counter}: \n Flow = {flow_rate:.2f}, Cumulative = {cumulative_flow:.2f}", flush=True)
+
+                #print(f"unfiltered: {unfiltered},  filtered: {filtered}")
             #print(f' Pressure = {pressure:.2f} Temp = {temperature:.2f} \n')
-            #print(f'{pressure_voltage}')
+                print(f'pressure volt: {pressure_voltage}')
 
 
 
