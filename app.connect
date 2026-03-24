@@ -1,0 +1,87 @@
+title: Sorbent Test 
+
+left_panel:
+  width: 0.23
+  tabs:
+    - name: Controls
+      layout:
+        - label: Flow Meter Controls
+          collapsible: true
+          group_layout:
+            - text: Start Simulation
+              on_click:
+                path: sim_data.py
+            - text: Reset Data
+              on_click:
+                path: reset_data.py
+
+        - label: "Simulation Status"
+          id: sim_status
+          display: banner
+          value_id: status_text
+
+        - label: "Current Flow Rate"
+          id: current_flow
+          display: stream_value
+          stream_id: Flow Rate
+          color: rgb(145, 214, 110)
+          units: L/min
+
+        - label: "Total Volume"
+          id: total_volume
+          display: stream_value
+          stream_id: Cumulative Flow
+          color: rgb(120, 150, 200)
+          units: L
+
+        - label: "Elapsed Time"
+          id: elapsed_time
+          display: stream_value
+          stream_id: Elapsed Time
+          color: rgb(231, 110, 110)
+          units: s
+
+        - label: "Temperature"
+          id: temp
+          display: stream_value
+          stream_id: Temperature
+          color: rgb(247, 249, 142)
+          units: °C
+
+
+right_panel:
+  width: 0.77
+  tabs:
+    - name: Flow Data
+      layout:
+        - title: Flow Rate (L/min)
+          plot: line 
+          stream_id: Flow Rate
+          color: rgb(145, 214, 110)
+          height: 250
+
+        - title: Cumulative Flow (L)
+          plot: line
+          stream_id: Cumulative Flow
+          color: rgb(138, 170, 226)
+          height: 250
+
+        - title: Temperature (°C)
+          plot: line 
+          stream_id: Temperature
+          color: rgb(219, 76, 76)
+          height: 250
+
+        - title: Pressure (torr)
+          plot: line
+          stream_id: Pressure
+          color: rgb(233, 48, 202)
+          height: 250
+       
+
+        - title: CO2 (ppm)
+          plot: line
+          stream_id: Unfiltered CO2 ppm, Filtered CO2 ppm
+          height: 250
+
+
