@@ -41,6 +41,13 @@ left_panel:
           color: rgb(231, 110, 110)
           units: s
 
+        - label: "Pressure"
+          id: pressure
+          display: stream_value
+          stream_id: Pressure
+          color: rgb(231, 110, 110)
+          units: s
+
 
 
 right_panel:
