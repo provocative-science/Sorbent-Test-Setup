@@ -32,7 +32,16 @@ def main(client: connect_python.Client):
     
     # Update status
     client.set_value("status_text", "Simulation Running")
-    
+
+    #CO2 Sensor Serial reading
+    PORT = "/dev/cu.usbserial-B0021TCS"   # change this
+    BAUD = 9600 
+
+    ser = serial.Serial(PORT, BAUD, timeout=2)
+    ser.reset_input_buffer()
+
+
+
     # Simulation variables
     cumulative_flow = 0.0
     start_time = time.time()
@@ -92,7 +101,26 @@ def main(client: connect_python.Client):
             # therm_voltage = ljm.eReadName(handle, thermistor_name)
             # temperature = voltage_to_temperature(therm_voltage, supply_voltage, R_fixed, R_nominal, T_nominal, beta)
 
-            
+                raw = ser.readline()
+                if not raw:
+                    continue
+                line = raw.decode("ascii", "ignore").strip()
+                if not line:
+                    continue
+
+                try:
+            # Option A: fixed-width (update indices to match your data)
+                    filtered = float(line[18:23])
+                    unfiltered = float(line[26:31])
+            # Stream using EXACT IDs from app.connect
+                    client.stream("Filtered CO2 ppm", datetime.now(), filtered)
+                    client.stream("Unfiltered CO2 ppm", datetime.now(), unfiltered)
+                except (ValueError, IndexError):
+            # Skip malformed lines rather than crashing the simulation
+                    continue
+                time.sleep(0.1)
+
+
 
 
             # Read Pressure Sensor

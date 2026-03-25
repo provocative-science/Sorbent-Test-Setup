@@ -9,7 +9,8 @@ def main(client: connect_python.Client):
     client.clear_stream("Elapsed Time")
     client.clear_stream("Temperature")
     client.clear_stream("Pressure")
-    client.clear_stream("CO2 ppm")
+    client.clear_stream("Unfiltered CO2 ppm")
+    client.clear_stream("Filtered CO2 ppm")
     client.set_value("status_text", "Data cleared")
     
     
