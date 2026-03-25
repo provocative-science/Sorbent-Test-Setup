@@ -45,8 +45,8 @@ left_panel:
           id: pressure
           display: stream_value
           stream_id: Pressure
-          color: rgb(231, 110, 110)
-          units: s
+          color: rgb(233, 48, 202)
+
 
 
 
@@ -67,7 +67,7 @@ right_panel:
           color: rgb(138, 170, 226)
           height: 250
 
-        - title: Pressure (torr)
+        - title: Pressure 
           plot: line
           stream_id: Pressure
           color: rgb(233, 48, 202)

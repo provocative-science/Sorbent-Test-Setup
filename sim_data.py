@@ -144,7 +144,7 @@ def main(client: connect_python.Client):
 
             #print(f' Pressure = {pressure:.2f} Temp = {temperature:.2f} \n')
                 #print(f'pressure volt: {pressure_voltage}')
-                print(f'co2: {filtered} & {unfiltered}')
+                #print(f'co2: {filtered} & {unfiltered}')
 
 
                 time.sleep(0.5)  # Update every 0.5 seconds
