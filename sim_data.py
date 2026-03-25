@@ -24,7 +24,7 @@ import serial
    
 def voltage_to_pressure(pressure_voltage, pressure_fs_voltage, full_scale_torr):
     torr = pressure_voltage*(full_scale_torr/pressure_fs_voltage)
-    return torr
+    return torr/7.6
 
 
 @connect_python.main
