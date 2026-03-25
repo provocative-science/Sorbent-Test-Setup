@@ -38,22 +38,37 @@
 #     except:
 #         pass
 
-import serial
+# import serial
 
 PORT = "/dev/cu.usbserial-B0021TCS"
 BAUD = 9600
 
-with serial.Serial(PORT, BAUD, bytesize=8, parity="N", stopbits=1, timeout=2) as ser:
-    # Put sensor in streaming mode
-    ser.write(b"K 1\r\n")
+# with serial.Serial(PORT, BAUD, bytesize=8, parity="N", stopbits=1, timeout=2) as ser:
+#     # Put sensor in streaming mode
+#     ser.write(b"K 1\r\n")
 
-    while True:
-        line = ser.readline().decode("ascii", errors="ignore").strip()
-        print (line)
-        # filtered = float(parts[5])
-        # unfiltered = float(parts[7])
-        filtered = line[18:23]     # chars 5..9
-        unfiltered = line[26:31]  # chars 11..15
+#     while True:
+#         line = ser.readline().decode("ascii", errors="ignore").strip()
+#         print (line)
+#         # filtered = float(parts[5])
+#         # unfiltered = float(parts[7])
+#         filtered = line[18:23]     # chars 5..9
+#         unfiltered = line[26:31]  # chars 11..15
 
-        if line:
-            print(f'filtered: {filtered}    unfiltered: {unfiltered}')
+#         if line:
+#             print(f'filtered: {filtered}    unfiltered: {unfiltered}')
+
+import serial
+
+
+PORT = "/dev/cu.usbserial-B0021TCS"
+BAUD = 9600
+
+ser = serial.Serial(PORT, BAUD, bytesize=8, parity="N", stopbits=1, timeout=2)
+
+raw = ser.readline()              # reads until '\n' (if your device sends newlines)
+line = raw.decode("ascii", "ignore").strip()
+
+filtered = float(line[18:23])     # example indices
+unfiltered = float(line[26:31])
+raw = ser.readline()
