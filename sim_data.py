@@ -77,7 +77,7 @@ def main(client: connect_python.Client):
     ##### PRESSURE #####
     pressure_name = "AIN7"
     pressure_fs_voltage = 10
-    full_scale_torr = 100
+    full_scale_torr = 760
         
     
     while True:
@@ -110,7 +110,7 @@ def main(client: connect_python.Client):
 
                 try:
             # Option A: fixed-width (update indices to match your data)
-                    filtered = float(line[18:23])
+                    filtered = float(line[18:23]) 
                     unfiltered = float(line[26:31])
             # Stream using EXACT IDs from app.connect
                     client.stream("Filtered CO2 ppm", datetime.now(), filtered)
@@ -119,8 +119,6 @@ def main(client: connect_python.Client):
             # Skip malformed lines rather than crashing the simulation
                     continue
                 time.sleep(0.1)
-
-
 
 
             # Read Pressure Sensor
@@ -144,9 +142,9 @@ def main(client: connect_python.Client):
             # Print to logs 
                 print(f"Point {point_counter}: \n Flow = {flow_rate:.2f}, Cumulative = {cumulative_flow:.2f}", flush=True)
 
-                #print(f"unfiltered: {unfiltered},  filtered: {filtered}")
             #print(f' Pressure = {pressure:.2f} Temp = {temperature:.2f} \n')
-                print(f'pressure volt: {pressure_voltage}')
+                #print(f'pressure volt: {pressure_voltage}')
+                print(f'co2: {filtered} & {unfiltered}')
 
 
                 time.sleep(0.5)  # Update every 0.5 seconds
