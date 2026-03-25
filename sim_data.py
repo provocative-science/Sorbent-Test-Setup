@@ -118,7 +118,7 @@ def main(client: connect_python.Client):
                 except (ValueError, IndexError):
             # Skip malformed lines rather than crashing the simulation
                     continue
-                time.sleep(0.1)
+
 
 
             # Read Pressure Sensor
