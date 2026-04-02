@@ -47,6 +47,13 @@ left_panel:
           stream_id: Pressure
           color: rgb(233, 48, 202)
 
+        - label: "Filtered CO2"
+          id: Filtered CO2
+          display: stream_value
+          stream_id: Filtered CO2 ppm
+          color: rgb(230, 138, 26)
+
+
 
 
 

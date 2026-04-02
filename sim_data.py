@@ -5,22 +5,7 @@ from labjack import ljm
 from datetime import datetime
 import serial
 
-
-
-# def voltage_to_temperature(therm_voltage, supply_voltage, R_fixed, R_nominal, T_nominal, beta):
-#     """Convert AIN voltage to temperature in Celsius using Beta equation."""
-#     if therm_voltage <= 0 or therm_voltage >= supply_voltage:
-#         return None  # Guard against divide-by-zero at rail voltages
-#     # Voltage divider → thermistor resistance
-#     R_thermistor = R_fixed * therm_voltage / (supply_voltage - therm_voltage)
-#     # Beta equation → temperature in Kelvin
-#     temp_K = 1.0 / (1.0 / T_nominal + (1.0 / beta) * math.log(R_thermistor / R_nominal))
-#     return temp_K - 273.15  # Convert to Celsius
-
-#     temp_K = pressure_fs_temp * (supply_voltage / pressure_fs_voltage)
-
-
-    
+ 
    
 def voltage_to_pressure(pressure_voltage, pressure_fs_voltage, full_scale_torr):
     torr = pressure_voltage*(full_scale_torr/pressure_fs_voltage)
@@ -34,7 +19,7 @@ def main(client: connect_python.Client):
     client.set_value("status_text", "Simulation Running")
 
     #CO2 Sensor Serial reading
-    PORT = "/dev/cu.usbserial-B0021TCS"   # change this
+    PORT = "/dev/cu.usbserial-B0021TCS" 
     BAUD = 9600 
 
     ser = serial.Serial(PORT, BAUD, timeout=2)
@@ -66,13 +51,6 @@ def main(client: connect_python.Client):
     flow_fs_voltage = 5.0  # Full scale voltage of the sensor
     max_flow = 10.0    # Full scale flow rate in liters/min; 10,000 SCCM
 
-    # ##### THERMISTOR ##### --- these values needs to be upated with accurate values once thermistor is chosen
-    #     thermistor_name = "AIN1"
-    #     R_fixed = 1000.0        # Fixed resistor in voltage divider (ohms)
-    #     R_nominal = 10000.0     # Thermistor resistance at 25°C
-    #     T_nominal = 298.15      # 25°C in Kelvin
-    #     beta = 3892             # Beta coefficient (check your thermistor datasheet)
-    #     supply_voltage = 2.5    # Voltage divider voltage
 
     ##### PRESSURE #####
     pressure_name = "AIN7"
@@ -96,11 +74,7 @@ def main(client: connect_python.Client):
                 cumulative_flow += (flow_rate / 60.0) * time_delta #subtracting the negative (reverse direction)
             # cumulative_flow += (abs(flow_rate) / 60.0) * time_delta #adding the abs(negative) (reverse direction)
             
-
-            # # Read thermistor
-            # therm_voltage = ljm.eReadName(handle, thermistor_name)
-            # temperature = voltage_to_temperature(therm_voltage, supply_voltage, R_fixed, R_nominal, T_nominal, beta)
-
+                ser.reset_input_buffer()
                 raw = ser.readline()
                 if not raw:
                     continue
@@ -109,14 +83,14 @@ def main(client: connect_python.Client):
                     continue
 
                 try:
-            # Option A: fixed-width (update indices to match your data)
+            
                     filtered = float(line[18:23]) 
                     unfiltered = float(line[26:31])
-            # Stream using EXACT IDs from app.connect
+            # Stream 
                     client.stream("Filtered CO2 ppm", datetime.now(), filtered)
                     client.stream("Unfiltered CO2 ppm", datetime.now(), unfiltered)
                 except (ValueError, IndexError):
-            # Skip malformed lines rather than crashing the simulation
+
                     continue
 
 
@@ -125,43 +99,25 @@ def main(client: connect_python.Client):
                 pressure_voltage = ljm.eReadName(handle, pressure_name)
                 pressure = voltage_to_pressure(pressure_voltage, pressure_fs_voltage, full_scale_torr)
 
-            # Stream the flow data using positional arguments
+            # Stream the flow data
                 client.stream("Pressure", datetime.now(), pressure)
                 client.stream("Flow Rate", datetime.now(), flow_rate)
                 client.stream("Cumulative Flow", datetime.now(), cumulative_flow)
                 client.stream("Elapsed Time", datetime.now(), elapsed_time)
                 
-                
-                # client.stream("Filtered CO2 ppm", datetime.now(), f_float)
-                # client.stream("Unfiltered CO2 ppm", datetime.now(), un_float)
 
-            #if temperature is not None:
-                #client.stream("Temperature", datetime.now(), temperature)
             
             
             # Print to logs 
                 print(f"Point {point_counter}: \n Flow = {flow_rate:.2f}, Cumulative = {cumulative_flow:.2f}", flush=True)
 
-            #print(f' Pressure = {pressure:.2f} Temp = {temperature:.2f} \n')
-                #print(f'pressure volt: {pressure_voltage}')
-                #print(f'co2: {filtered} & {unfiltered}')
-
 
                 time.sleep(0.5)  # Update every 0.5 seconds
      
 
-
-
             #if elapsed_time >= 20:
                         #break
             
-# except KeyboardInterrupt: #not printing with nominal bc no keyboard interrupt, figure out the equivlent for hitting stop
-#     print("\nSimulation stopped by user")
-#     client.set_value("status_text", "Simulation Stopped") 
-# except Exception as e:
-#     print(f"Error in simulation: {e}")
-#     client.set_value("status_text", f"Error: {str(e)}")
-
 if __name__ == "__main__":
     main()
 
